@@ -6,7 +6,7 @@
 
 ```
 repo init -u https://android.googlesource.com/kernel/manifest -b common-android17-6.18-lts
-curl -o .repo/local_manifests/manifest_brcm_rpi.xml -L https://raw.githubusercontent.com/raspberry-vanilla/android_kernel_manifest/android-17.0/manifest_brcm_rpi.xml --create-dirs
+curl -o .repo/local_manifests/manifest_brcm_rpi.xml -L https://raw.githubusercontent.com/futgit2030/android_kernel_manifest/a17_avb/manifest_brcm_rpi.xml --create-dirs
 ```
 
 3. Sync source code:
@@ -17,16 +17,22 @@ repo sync
 
 4. Compile:
 
-Raspberry Pi 4:
-```
-tools/bazel build --config=fast --config=stamp //common:rpi4
-```
-
 Raspberry Pi 5:
 ```
+# defconfig neu erzeugen
+tools/bazel build --config=fast //common:rpi5_defconfig
+
+# update defconfig
+cp bazel-bin/common/rpi5_defconfig/.config \
+   common/arch/arm64/configs/android_rpi5_defconfig
+
+#check:
+cd common && git diff arch/arm64/configs/android_rpi5_defconfig | grep '^-CONFIG'
+
+#compile
 tools/bazel build --config=fast --config=stamp //common:rpi5
 ```
 
-Compiled kernel Image, dtbs, and overlays can be found in `bazel-bin/common/rpi4/arch/arm64/boot` or `bazel-bin/common/rpi5/arch/arm64/boot` directory.
+Compiled kernel Image, dtbs, and overlays can be found in `bazel-bin/common/rpi5/arch/arm64/boot` directory.
 
-Replace existing files in `device/brcm/rpi4-kernel` or `device/brcm/rpi5-kernel` directory of the Android source tree to include them in Android 17 build. You can also replace existing files in the boot partition of Raspberry Pi 4 or Raspberry Pi 5 Android 17 image.
+Replace existing files in `device/brcm/rpi5-kernel` directory of the Android source tree to include them in Android 17 build. You can also replace existing files in the boot partition Raspberry Pi 5 Android 17 image.
