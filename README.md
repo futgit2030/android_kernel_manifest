@@ -20,7 +20,7 @@ repo sync
 Raspberry Pi 5:
 ```
 # defconfig neu erzeugen
-tools/bazel build --config=fast //common:rpi5_defconfig
+tools/bazel build --config=fast --config=stamp //common:rpi5_defconfig 
 
 # update defconfig
 cp bazel-bin/common/rpi5_defconfig/.config \
