@@ -26,10 +26,10 @@ tools/bazel build --config=fast //common:rpi5_defconfig
 cp bazel-bin/common/rpi5_defconfig/.config \
    common/arch/arm64/configs/android_rpi5_defconfig
 
-#check:
+# check:
 cd common
 
-## anzeigen, ob geändert wurde:
+## anzeigen, ob Datei überhaupt geändert wurde (erwartet:  1 file changed, xx insertions(+), xx deletions(-) )
 git diff --stat arch/arm64/configs/android_rpi5_defconfig
 
 ## anzeige der geänderten Parameter:
