@@ -27,7 +27,16 @@ cp bazel-bin/common/rpi5_defconfig/.config \
    common/arch/arm64/configs/android_rpi5_defconfig
 
 #check:
-cd common && git diff arch/arm64/configs/android_rpi5_defconfig | grep '^-CONFIG'
+cd common
+
+## anzeigen, ob geändert wurde:
+git diff --stat arch/arm64/configs/android_rpi5_defconfig
+
+## anzeige der geänderten Parameter:
+git diff arch/arm64/configs/android_rpi5_defconfig | grep '^+CONFIG'
+
+## nochmals check der neuen kernel settings:
+grep -E "NET_SCH_(CBS|ETF|TAPRIO|MQPRIO|PRIO|MULTIQ)|VLAN_8021Q|BROADCOM_PHY|IKCONFIG_PROC"   arch/arm64/configs/android_rpi5_defconfig
 
 #compile
 tools/bazel build --config=fast --config=stamp //common:rpi5
